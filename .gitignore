@@ -1,0 +1,7 @@
+.zig-cache/
+zig-out/
+*.log
+.env
+.env.*
+.DS_Store
+Thumbs.db
