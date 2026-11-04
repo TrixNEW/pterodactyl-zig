@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE: ghcr.io/sukomc/pterodactyl-zig
+  IMAGE: ghcr.io/trixnew/pterodactyl-zig
   ZIG_VERSION: 0.17.0
 
 jobs:

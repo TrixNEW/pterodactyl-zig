@@ -8,15 +8,15 @@ After a successful publication from `main`:
 
 | Image | Meaning |
 | --- | --- |
-| `ghcr.io/sukomc/pterodactyl-zig:0.17.0` | Tested Zig 0.17.0 image; may receive maintenance rebuilds |
-| `ghcr.io/sukomc/pterodactyl-zig:sha-<full-commit>` | Image built from that repository commit |
-| `ghcr.io/sukomc/pterodactyl-zig@sha256:<digest>` | Immutable multi-architecture image reference |
+| `ghcr.io/trixnew/pterodactyl-zig:0.17.0` | Tested Zig 0.17.0 image; may receive maintenance rebuilds |
+| `ghcr.io/trixnew/pterodactyl-zig:sha-<full-commit>` | Image built from that repository commit |
+| `ghcr.io/trixnew/pterodactyl-zig@sha256:<digest>` | Immutable multi-architecture image reference |
 
 CI writes the published digest and pull reference to its run summary. Use the digest for reproducible deployments. There is no floating `latest` tag.
 
 ## Pterodactyl
 
-Add `ghcr.io/sukomc/pterodactyl-zig:0.17.0` (or its digest reference) to an existing egg's **Docker Images** list, then select it for the server. Configure the application to listen on `0.0.0.0` and its allocated port. This repository does not provide an egg or application installer.
+Add `ghcr.io/trixnew/pterodactyl-zig:0.17.0` (or its digest reference) to an existing egg's **Docker Images** list, then select it for the server. Configure the application to listen on `0.0.0.0` and its allocated port. This repository does not provide an egg or application installer.
 
 Wings mounts server files at `/home/container` and selects the runtime UID/GID. The default image user is `container` (1000:1000). Mount ownership must match Wings' configured UID/GID; the entrypoint does not run as root or recursively change permissions. `HOME`, the working directory and the persistent Zig global cache are under `/home/container`. `/tmp` must also be writable, as Wings normally provides it.
 
@@ -55,7 +55,7 @@ Zig retains its standard library, bundled C toolchain and package manager. `zig 
 
 GitHub Actions builds and tests both architectures on native runners for pull requests and pushes. Successful `main` builds publish to GHCR, then combine the platform digests into the version and commit tags. BuildKit uses a separate GitHub Actions cache for each architecture. Tests check version, startup quoting/failures, stdin, non-root permissions, a read-only root filesystem, compilation, HTTPS dependency fetching and signal forwarding to child processes. They reproduce Wings' container restrictions; they do not start a live Panel/Wings installation.
 
-The workflow's `GITHUB_TOKEN` needs permission to publish packages under **sukomc**. Run the repository in that organization with package creation enabled, or grant the repository write access to the existing GHCR package. Otherwise, set the repository secret `GHCR_TOKEN` to a classic personal access token with `write:packages` and access to that organization; the workflow prefers it over `GITHUB_TOKEN`. Make the package public for unauthenticated Wings pulls. Publishing has not occurred until the workflow succeeds.
+The workflow's `GITHUB_TOKEN` needs permission to publish packages under **trixnew**. Run the repository in that organization with package creation enabled, or grant the repository write access to the existing GHCR package. Otherwise, set the repository secret `GHCR_TOKEN` to a classic personal access token with `write:packages` and access to that organization; the workflow prefers it over `GITHUB_TOKEN`. Make the package public for unauthenticated Wings pulls. Publishing has not occurred until the workflow succeeds.
 
 The Debian multi-architecture base is digest-pinned. Debian packages, including transitive dependencies and security upgrades, come from a fixed, signed snapshot, with important packages additionally version-pinned. Snapshot expiry checks are disabled only for that historical archive; signature validation stays enabled. Zig archives and minisign signatures come from [ziglang.org](https://ziglang.org/download/), are verified against the pinned official public key **before extraction**, and must report the requested version. Download tools used only for verification stay out of the final image, and the toolchain and entrypoint are root-owned.
 
